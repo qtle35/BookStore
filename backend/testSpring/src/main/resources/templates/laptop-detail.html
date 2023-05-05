@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>laptop</title>
+</head>
+<body>
+	<div class="row">
+		<h1>laptop</h1>
+	</div>
+	<form th:object="${laptop}"
+		th:action="@{/laptop/save/{id}(id=${laptop.id})}"
+		th:method="${laptop.id} <= 0 ? POST : PUT"
+		th:onsubmit="return confirmDelete()">
+		id: <a type="number" name="id" min=0 th:value="${laptop.id}"><br />
+			name: <input type="text" name="name" th:value="${laptop.name}"><br />
+			price: <input type="number" name="price" th:value="${laptop.price}"
+			min=0><br /> 
+			brand: <input type="text" name="brand" th:value="${laptop.brand}"><br /> 
+			sold: <input type="checkbox" name="sold" th:checked="${laptop.sold}"><br />
+			nsx: <input type="date" name="nsx" th:value="${laptop.nsx}"><br />
+			<input type="submit" value="Save laptop">
+			<h3 th:text="${mess}"></h3>
+	</form>
+	<script type="text/javascript">
+		const form = document.querySelector('form');
+		const inputs = form.querySelectorAll('input');
+		form.addEventListener('submit', (e) => {
+		  let isEmpty = false;
+		  inputs.forEach((input) => {
+		    if (input.value === '') {
+		      isEmpty = true;
+		    }
+		  });
+		  if (isEmpty) {
+		    e.preventDefault();
+		    alert('Vui lòng điền đầy đủ thông tin');
+		  }
+		});
+		function confirmDelete(){
+			return confirm("ban co thuc su muon sua");
+		}
+	</script>
+</body>
+</html>
