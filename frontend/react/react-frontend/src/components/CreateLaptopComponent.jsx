@@ -18,9 +18,11 @@ const CreateLaptopComponent = () => {
     });
     const onDrop = useCallback((acceptedFiles) => {
         setSelectedFiles(acceptedFiles)
-        console.log(acceptedFiles);
+        setLaptop((prevState) => ({
+            ...prevState,
+            image: '',
+          }));
     }, []);
-
     const { getRootProps, getInputProps } = useDropzone({
         onDrop,
         accept: { "image/*": [] },
@@ -78,6 +80,7 @@ const CreateLaptopComponent = () => {
         formData.append('nsx', laptop.nsx);
         formData.append('image', laptop.image);
         if (selectedFiles.length > 0) {
+            
             formData.append('image1', selectedFiles[0]);
         }
 
@@ -91,7 +94,6 @@ const CreateLaptopComponent = () => {
                 }
                 await LaptopService.createLaptop(formData);
             } else {
-                console.log(laptop )
                 await LaptopService.updateLaptop(formData, id);
             }
             navigate('/laptop');
