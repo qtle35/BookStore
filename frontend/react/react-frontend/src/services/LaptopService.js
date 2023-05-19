@@ -10,7 +10,9 @@ class LaptopService {
         return axios.post(LAPTOP_API_BASE_URL, formdata, {
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }
+            },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity
         });
     }
     getLaptops(id) {
@@ -20,7 +22,9 @@ class LaptopService {
         return axios.put(LAPTOP_API_BASE_URL + '/' + id, Laptop, {
             headers: {
                 'Content-Type': 'multipart/form-data'
-            }
+            },
+            maxContentLength: Infinity,
+            maxBodyLength: Infinity
         });
     }
     deleteLaptop(id) {
@@ -28,4 +32,5 @@ class LaptopService {
     }
 }
 
-export default new LaptopService()
+const laptopService = new LaptopService();
+export default laptopService;

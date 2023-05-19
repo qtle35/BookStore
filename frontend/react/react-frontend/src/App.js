@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import ListLaptopComponent from './components/ListLaptopComponent';
 import CreateLaptopComponent from './components/CreateLaptopComponent';
-import { PostList } from './PostList';
+import DetectLanguage from './components/DetectLanguage';
 
 function App() {
   return (
@@ -12,10 +12,10 @@ function App() {
           <Route path='/' element={<ListLaptopComponent />} />
           <Route path='/laptop' element={<ListLaptopComponent />} />
           <Route path='/laptop/:id' element={<CreateLaptopComponent />} />
+          <Route path='/language' element={<DetectLanguage />} />
         </Routes>
       </div>
     </BrowserRouter>
-    // <PostList />
   );
 }
 

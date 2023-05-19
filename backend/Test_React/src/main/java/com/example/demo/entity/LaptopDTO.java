@@ -2,6 +2,8 @@ package com.example.demo.entity;
 
 import java.sql.Date;
 
+import org.springframework.web.multipart.MultipartFile;
+
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,12 +13,12 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LaptopDTO {
-    private String name;
-    private String price;
-    private String brand;
-    private String sold;
+	private int id;
+	private String name;
+	private int price;
+	private String brand;
     private String nsx;
-    private String imagePath;
+//    private String Image;
     // getter, setter
 }
 

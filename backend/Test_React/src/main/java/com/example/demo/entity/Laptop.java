@@ -31,9 +31,9 @@ public class Laptop {
 	@Column
 	private boolean sold;
 	@Column
-	private Date nsx;
-	@Column
-	private String imagePath;
+	private String nsx;
+//	@Column
+//	private String imagePath;
 	
 	
 }

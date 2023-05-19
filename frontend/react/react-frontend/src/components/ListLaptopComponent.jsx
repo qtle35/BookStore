@@ -1,24 +1,29 @@
 import React, { useEffect, useState } from 'react';
 import LaptopService from '../services/LaptopService';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 function ListLaptopComponent() {
     const navigate = useNavigate();
     const [laptops, setLaptops] = useState([]);
-    const [searchResult, setsearchResult] = useState([]);
+    const [filteredLaptops, setFilteredlaptops] = useState([]);
+    const [k, setK] = useState('')
 
     useEffect(() => {
         LaptopService.getAllLaptops().then((res) => {
             setLaptops(res.data);
-            setsearchResult(res.data);
+            setFilteredlaptops(res.data);
         });
     }, []);
+
     const addLaptop = () => {
         navigate('/laptop/-1');
     };
+
     const viewLaptop = (id) => {
         navigate(`/laptop/${id}`);
     };
+
     const deleteLaptop = async (id) => {
         try {
             await LaptopService.deleteLaptop(id);
@@ -27,34 +32,37 @@ function ListLaptopComponent() {
             console.log(error);
         }
     };
-    const searchLaptop = (e) => {
-        const value = e.target.value;
-        const filteredLaptops = laptops.filter(
-            (laptop) => {
-                if (value === null) {
-                    return laptop
-                }
-                else {
-                    return laptop.name.toLowerCase().includes(value.toLowerCase()) ||
-                        laptop.brand.toLowerCase().includes(value.toLowerCase())
-                }
-
-            }
-
-        );
-        setsearchResult(filteredLaptops);
+    useEffect(() => {
+        setFilteredlaptops(laptops.filter((laptop) => {
+            return laptop.name.toLowerCase().includes(k.toLowerCase()) ||
+                laptop.brand.toLowerCase().includes(k.toLowerCase())
+        }))
+    },[laptops,k])
+    const searchButton = () => {
+        axios.get(`http://localhost:8080/api/v1/laptops?name=${k}`)
+            .then((res) => {
+                setLaptops(res.data)
+            })
+            .catch((error) => {
+                console.log(error);
+            });
     };
+
 
     return (
         <div className="container">
             <div className="row search-container">
                 <h1>List laptops</h1>
-                <input
-                    className="search-bar"
-                    type="text"
-                    placeholder="Search by name or brand..."
-                    onChange={searchLaptop}
-                />
+                <div className='btn-group'>
+                    <input
+                        className="search-bar"
+                        type="text"
+                        placeholder="Search by name or brand..."
+                        onChange={(e)=> setK(e.target.value)}
+                        id='1'
+                    />
+                    <button onClick={searchButton} className='btn btn-outline-success'>Search </button>
+                </div>
             </div>
             <table className="table table-striped table-bordered">
                 <thead className="table-dark">
@@ -70,24 +78,28 @@ function ListLaptopComponent() {
                 </thead>
 
                 <tbody>
-                    {searchResult.map((laptop) => (
+                    {filteredLaptops.map((laptop) => (
+
                         <tr key={laptop.id}>
                             <td>{laptop.id}</td>
                             <td>{laptop.name}</td>
                             <td>{laptop.price}</td>
                             <td>{laptop.brand}</td>
-                            <td><input type="checkbox" defaultChecked={laptop.sold} /></td>
+                            <td><input type="checkbox" defaultChecked={laptop.sold} disabled /></td>
                             <td>{laptop.nsx}</td>
-                            <td>{laptop.imageData}</td>
                             <td>
-                                <button onClick={() => viewLaptop(laptop.id)} className='btn btn-success' >View</button>
+                                <img src={`data:image;base64,${laptop.image}`} alt="" />
+                            </td>
+
+                            <td>
+                                <button onClick={() => viewLaptop(laptop.id)} className='btn btn-outline-success' >View</button>
                                 <button onClick={() => deleteLaptop(laptop.id)} className='btn btn-danger' >Delete</button>
                             </td>
                         </tr>
                     ))}
                 </tbody>
             </table>
-            <button className="btn btn-success col-lg-12" onClick={addLaptop}>
+            <button className="btn btn-outline-success col-lg-2 offset-md-5 offset-md-5" onClick={addLaptop}>
                 New laptop
             </button>
         </div>

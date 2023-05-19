@@ -8,14 +8,13 @@ const CreateLaptopComponent = () => {
     const navigate = useNavigate();
     const { id } = useParams();
     const [selectedFiles, setSelectedFiles] = useState([]);
-    // const [imageURL, setImageURL] = useState('');
     const [laptop, setLaptop] = useState({
         name: '',
         price: '',
         brand: '',
         sold: false,
         nsx: '',
-        imagePath:''
+        imagePath: ''
     });
     const onDrop = useCallback((acceptedFiles) => {
         setSelectedFiles(acceptedFiles)
@@ -26,6 +25,10 @@ const CreateLaptopComponent = () => {
         onDrop,
         accept: { "image/*": [] },
     });
+    useEffect(() =>
+        () => {
+          selectedFiles.forEach((file) => URL.revokeObjectURL(file.preview));
+    },[selectedFiles]);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -68,7 +71,7 @@ const CreateLaptopComponent = () => {
         event.preventDefault();
         const isDuplicate = await checkDuplicate();
         const formData = new FormData();
-        formData.append('laptop',JSON.stringify(laptop) );
+        formData.append('laptop', JSON.stringify(laptop));
         if (selectedFiles.length > 0) {
             formData.append('image', selectedFiles[0]);
         }
@@ -157,6 +160,9 @@ const CreateLaptopComponent = () => {
                                 <div className="image-preview-container">
                                     {selectedFiles.length > 0 && (
                                         <img className="image-preview" src={URL.createObjectURL(selectedFiles[0])} alt="preview" />
+                                    )}
+                                    {selectedFiles.length === 0 && (
+                                        <img className="image-preview" src={`data:image/jpeg;base64,${laptop.image}`} alt="preview" />
                                     )}
                                     <p className={selectedFiles.length > 0 ? "d-none" : ""}>Tải ảnh lên</p>
                                 </div>

@@ -7,10 +7,14 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,30 +42,61 @@ public class LaptopController {
 	@Autowired
 	LaptopRepository laptopRepository;
 	
+//	@GetMapping("/laptops")
+//	public List<LaptopDTO> getAllLaptops(){
+//		List<Laptop> laptops = laptopRepository.findAll();
+//		List<LaptopDTO> laptopDTOs = new ArrayList<>();
+//		for( Laptop laptop : laptops) {
+//			ModelMapper mapper = new ModelMapper();
+//			LaptopDTO laptopDTO = mapper.map(laptop, LaptopDTO.class);
+////			System.out.println(laptop.toString());
+//			if (laptop.getImagePath() != null && !laptop.getImagePath().isEmpty()) {
+//	            File imageFile = new File(laptop.getImagePath());
+//	            System.out.println(1);
+//	            if (imageFile.exists()) {
+//	                byte[] imageBytes = null;
+//					try {
+//						imageBytes = Files.readAllBytes(imageFile.toPath());
+//					} catch (IOException e) {
+//						// TODO Auto-generated catch block
+//						e.printStackTrace();
+//					}
+//	                laptopDTO.setImage(Base64.getEncoder().encodeToString(imageBytes));
+//	            }
+//	        }
+//			laptopDTOs.add(laptopDTO);
+//		}
+//		return laptopDTOs;
+//	}
+//	@PostMapping(value = "/laptops", consumes = {"multipart/form-data"})
+//	public Laptop createLaptop(@RequestParam("laptop") String laptopJSON, @RequestPart("image") MultipartFile image) throws IOException{
+//		ObjectMapper objectMapper = new ObjectMapper();
+//		Laptop laptop = new Laptop();
+//		laptop = objectMapper.readValue(laptopJSON, laptop.getClass());
+//	    Laptop savedLaptop = laptopRepository.save(laptop);
+//	    String imageFolderPath = "src/main/resources/images/laptops/";
+//	    Path folderPath = Paths.get(imageFolderPath);
+//	    System.out.println(laptop.toString());
+//	    if (!Files.exists(folderPath)) {
+//	        Files.createDirectories(folderPath);
+//	    }
+//	    if (!image.isEmpty()) {
+//	        Path imagePath = Paths.get(imageFolderPath + savedLaptop.getId() + ".jpg");
+//	        Files.write(imagePath, image.getBytes());
+//	        savedLaptop.setImagePath(imagePath.toString());
+//	    }
+//	    return laptopRepository.save(savedLaptop);
+//	}
 	@GetMapping("/laptops")
-	public List<Laptop> getAllLaptops(){
-		return laptopRepository.findAll();
+	public List<Laptop> getAllLaptops(@RequestParam(required = false) String name){
+		if(name == null)return laptopRepository.findAll();
+		return laptopRepository.findByNameContainsOrBrandContains(name, name);
+			
 	}
-	@PostMapping(value = "/laptops", consumes = {"multipart/form-data"})
-	public Laptop createLaptop(@RequestParam("laptop") String laptopJSON, @RequestPart("image") MultipartFile image) throws IOException{
-		ObjectMapper objectMapper = new ObjectMapper();
-		Laptop laptop = new Laptop();
-		laptop = objectMapper.readValue(laptopJSON, laptop.getClass());
-	    Laptop savedLaptop = laptopRepository.save(laptop);
-	    String imageFolderPath = "src/main/resources/images/laptops/";
-	    Path folderPath = Paths.get(imageFolderPath);
-	    System.out.println(laptop.toString());
-	    if (!Files.exists(folderPath)) {
-	        Files.createDirectories(folderPath);
-	    }
-	    if (!image.isEmpty()) {
-	        Path imagePath = Paths.get(imageFolderPath + savedLaptop.getId() + ".jpg");
-	        Files.write(imagePath, image.getBytes());
-	        savedLaptop.setImagePath(imagePath.toString());
-	    }
-	    return laptopRepository.save(savedLaptop);
+	@PostMapping(value = "/laptops")
+	public Laptop createLaptop(@RequestBody Laptop laptop){
+	    return laptopRepository.save(laptop);
 	}
-
 	@GetMapping("/laptops/{id}")
 	public Laptop getLaptop(@PathVariable String id) {
 		int id1 = Integer.parseInt(id);
