@@ -14,7 +14,7 @@ const CreateLaptopComponent = () => {
         brand: '',
         sold: false,
         nsx: '',
-        imagePath: ''
+        image: ''
     });
     const onDrop = useCallback((acceptedFiles) => {
         setSelectedFiles(acceptedFiles)
@@ -27,8 +27,8 @@ const CreateLaptopComponent = () => {
     });
     useEffect(() =>
         () => {
-          selectedFiles.forEach((file) => URL.revokeObjectURL(file.preview));
-    },[selectedFiles]);
+            selectedFiles.forEach((file) => URL.revokeObjectURL(file.preview));
+        }, [selectedFiles]);
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -71,9 +71,14 @@ const CreateLaptopComponent = () => {
         event.preventDefault();
         const isDuplicate = await checkDuplicate();
         const formData = new FormData();
-        formData.append('laptop', JSON.stringify(laptop));
+        formData.append('name', laptop.name);
+        formData.append('price', laptop.price);
+        formData.append('brand', laptop.brand);
+        formData.append('sold', laptop.sold);
+        formData.append('nsx', laptop.nsx);
+        formData.append('image', laptop.image);
         if (selectedFiles.length > 0) {
-            formData.append('image', selectedFiles[0]);
+            formData.append('image1', selectedFiles[0]);
         }
 
         try {
@@ -84,9 +89,9 @@ const CreateLaptopComponent = () => {
                     alert('Laptop da ton tai!');
                     return;
                 }
-                console.log([...formData.entries()]);
                 await LaptopService.createLaptop(formData);
             } else {
+                console.log(laptop )
                 await LaptopService.updateLaptop(formData, id);
             }
             navigate('/laptop');
@@ -157,14 +162,16 @@ const CreateLaptopComponent = () => {
                         <div className="form-group">
                             <div {...getRootProps()}>
                                 <input {...getInputProps()} />
+                                <p className={selectedFiles.length > 0 ? "d-none" : ""}>Tải ảnh lên</p>
                                 <div className="image-preview-container">
+
                                     {selectedFiles.length > 0 && (
                                         <img className="image-preview" src={URL.createObjectURL(selectedFiles[0])} alt="preview" />
                                     )}
-                                    {selectedFiles.length === 0 && (
+                                    {laptop.image !== '' && selectedFiles.length === 0 && (
                                         <img className="image-preview" src={`data:image/jpeg;base64,${laptop.image}`} alt="preview" />
                                     )}
-                                    <p className={selectedFiles.length > 0 ? "d-none" : ""}>Tải ảnh lên</p>
+
                                 </div>
                             </div>
                         </div>

@@ -37,7 +37,7 @@ function ListLaptopComponent() {
             return laptop.name.toLowerCase().includes(k.toLowerCase()) ||
                 laptop.brand.toLowerCase().includes(k.toLowerCase())
         }))
-    },[laptops,k])
+    }, [laptops, k])
     const searchButton = () => {
         axios.get(`http://localhost:8080/api/v1/laptops?name=${k}`)
             .then((res) => {
@@ -58,7 +58,7 @@ function ListLaptopComponent() {
                         className="search-bar"
                         type="text"
                         placeholder="Search by name or brand..."
-                        onChange={(e)=> setK(e.target.value)}
+                        onChange={(e) => setK(e.target.value)}
                         id='1'
                     />
                     <button onClick={searchButton} className='btn btn-outline-success'>Search </button>

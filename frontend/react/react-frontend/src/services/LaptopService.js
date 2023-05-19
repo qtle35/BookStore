@@ -18,8 +18,8 @@ class LaptopService {
     getLaptops(id) {
         return axios.get(LAPTOP_API_BASE_URL + '/' + id);
     }
-    updateLaptop(Laptop, id) {
-        return axios.put(LAPTOP_API_BASE_URL + '/' + id, Laptop, {
+    updateLaptop(formdata, id) {
+        return axios.put(LAPTOP_API_BASE_URL + '/' + id, formdata, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             },
