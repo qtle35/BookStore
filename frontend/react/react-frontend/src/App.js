@@ -1,20 +1,22 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import ListLaptopComponent from './components/ListLaptopComponent';
-import CreateLaptopComponent from './components/CreateLaptopComponent';
-import DetectLanguage from './components/DetectLanguage';
+import CreateBook from './components/CreateBook';
+import ListBook from './components/ListBook';
+import Login from './components/Login';
+import Signup from './components/Signup';
+import Navbar from './components/Navbar';
 
 function App() {
   return (
     <BrowserRouter>
-      <div className="container">
+      <Navbar />
         <Routes>
-          <Route path='/' element={<ListLaptopComponent />} />
-          <Route path='/laptop' element={<ListLaptopComponent />} />
-          <Route path='/laptop/:id' element={<CreateLaptopComponent />} />
-          <Route path='/language' element={<DetectLanguage />} />
+          <Route path='/' element={<ListBook />} />
+          <Route path='/book' element={<ListBook />} />
+          <Route path='/book/:id' element={<CreateBook />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/signup' element={<Signup />} />
         </Routes>
-      </div>
     </BrowserRouter>
   );
 }
