@@ -6,6 +6,7 @@ import { useDropzone } from 'react-dropzone'
 
 const CreateBook = () => {
     const navigate = useNavigate();
+    const user = JSON.parse(localStorage.getItem('user'));
     const { id } = useParams();
     const [selectedFiles, setSelectedFiles] = useState([]);
     const [book, setbook] = useState({});
@@ -42,7 +43,7 @@ const CreateBook = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const res = await BookService.getBooks(id);
+                const res = await BookService.getBook(id);
                 setbook(res.data);
             } catch (error) {
                 console.log(error);
@@ -96,7 +97,7 @@ const CreateBook = () => {
             }
             navigate('/book');
         } catch (error) {
-            console.log(error);
+            alert(error.response.data);
         }
     };
 
@@ -167,10 +168,12 @@ const CreateBook = () => {
                         </div>
                     </div>
                     <hr />
-                    <div className="col-12">
-                        <button type='submit' className="btn btn-success" onClick={handleSubmit}>{id === 0 ? 'Add' : (isEditable ? 'Save' : 'Edit')}</button>
-                    </div>
-                    {/* <label>{book.imagePath}</label> */}
+                    {user && user.rol[0] === 'ADMIN' && (
+                        <div className="col-12">
+                            <button type='submit' className="btn btn-success" onClick={handleSubmit}>{id === 0 ? 'Add' : (isEditable ? 'Save' : 'Edit')}</button>
+                        </div>
+                    )}
+
                 </div>
 
                 <div className="col-lg-6">

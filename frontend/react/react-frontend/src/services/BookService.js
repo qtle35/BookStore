@@ -58,6 +58,33 @@ class BookService {
             }
         });
     }
+    saveComment(formdata) {
+        const token = localStorage.getItem('accessToken');
+
+        return axios.post(BOOK_API_BASE_URL + '/comments', formdata, {
+            headers: {
+                Authorization: `Bearer ${token}`,
+            },
+        });
+    }
+    getComment(id) {
+        const token = localStorage.getItem('accessToken');
+
+        return axios.get(BOOK_API_BASE_URL + '/comments/' + id, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
+    deleteComment(id) {
+        const token = localStorage.getItem('accessToken');
+
+        return axios.delete(BOOK_API_BASE_URL + '/comments/' + id, {
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
+    }
 }
 
 const bookService = new BookService();

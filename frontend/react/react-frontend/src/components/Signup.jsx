@@ -4,70 +4,54 @@ import AuthContext from './AuthContext';
 import axios from 'axios';
 
 function Signup() {
-    const { userLogin,  } = useContext(AuthContext);
+    const { userLogin } = useContext(AuthContext);
     const navigate = useNavigate();
 
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [name, setName] = useState('');
-    const [email, setEmail] = useState('');
+    const [formData, setFormData] = useState({
+        username: '',
+        password: '',
+        name: '',
+        email: '',
+    });
+
     const [isError, setIsError] = useState(false);
     const [errorMessage, setErrorMessage] = useState('');
     const [isRegistered, setIsRegistered] = useState(false);
 
     useEffect(() => {
         if (isRegistered) {
-            navigate('/login')
-    }
+            navigate('/login');
+        }
     }, [isRegistered]);
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
-        if (name === 'username') {
-            setUsername(value);
-        } else if (name === 'password') {
-            setPassword(value);
-        } else if (name === 'name') {
-            setName(value);
-        } else if (name === 'email') {
-            setEmail(value);
-        }
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: value,
+        }));
     };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
-        if (!(username && password && name && email)) {
-            setIsError(true);
-            setErrorMessage('Please, inform all fields!');
-            return;
-        }
-
+        const { username, password, name, email } = formData;
         try {
-            const user = {
-                username,
-                password,
-                name,
-                email,
-            };
-            console.log(user)
+            const user = new FormData();
+            user.append('username', username);
+            user.append('password', password);
+            user.append('name', name);
+            user.append('email', email);
+
             const response = await axios.post('http://localhost:8080/auth/signup', user);
 
-            if (response.status === 200) {
-                const { accessToken } = response.data;
-                userLogin({ data: {}, accessToken });
-
-                setUsername('');
-                setPassword('');
-                setName('');
-                setEmail('');
+            if (response.status === 201) {
                 setIsError(false);
                 setErrorMessage('');
                 setIsRegistered(true);
             }
         } catch (error) {
             setIsError(true);
-            setErrorMessage('An error occurred during signup.');
+            setErrorMessage('Username hoặc email trùng!');
             console.error(error);
         }
     };
@@ -82,10 +66,11 @@ function Signup() {
                             <input
                                 type="text"
                                 name="username"
-                                value={username}
+                                value={formData.username}
                                 onChange={handleInputChange}
                                 className="form-control"
                                 placeholder="Enter username"
+                                required
                             />
                         </div>
 
@@ -94,10 +79,11 @@ function Signup() {
                             <input
                                 type="password"
                                 name="password"
-                                value={password}
+                                value={formData.password}
                                 onChange={handleInputChange}
                                 className="form-control"
                                 placeholder="Enter password"
+                                required
                             />
                         </div>
 
@@ -106,10 +92,11 @@ function Signup() {
                             <input
                                 type="text"
                                 name="name"
-                                value={name}
+                                value={formData.name}
                                 onChange={handleInputChange}
                                 className="form-control"
                                 placeholder="Enter name"
+                                required
                             />
                         </div>
 
@@ -118,10 +105,11 @@ function Signup() {
                             <input
                                 type="email"
                                 name="email"
-                                value={email}
+                                value={formData.email}
                                 onChange={handleInputChange}
                                 className="form-control"
                                 placeholder="Enter email"
+                                required
                             />
                         </div>
 

@@ -15,29 +15,23 @@ export const AuthProvider = ({ children }) => {
                 username,
                 password
             });
-
             const { accessToken } = response.data;
             localStorage.setItem('accessToken', accessToken);
             const decodedToken = jwt_decode(accessToken);
             localStorage.setItem('user', JSON.stringify(decodedToken));
             setUser(decodedToken);
             setIsLoggedIn(true);
+            setIsError(false)
         } catch (error) {
             setIsError(true);
         }
     };
     const userLogout = () => {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('user')
+        localStorage.removeItem('cartItems')
         setUser(null);
         setIsLoggedIn(false);
-    };
-    const parseUserDataFromToken = (token) => {
-        const decodedToken = jwt_decode(token);
-        const userData = {
-            username: decodedToken.username,
-            email: decodedToken.email,
-        };
-        return JSON.stringify(decodedToken);
     };
 
     return (

@@ -1,11 +1,10 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import AuthContext from './AuthContext';
 
 function Login() {
     const navigate = useNavigate();
-    const { userLogin, isError } = useContext(AuthContext);
-
+    const { isLoggedIn, userLogin, isError, userLogout } = useContext(AuthContext);
     const [formData, setFormData] = useState({
         username: '',
         password: '',
@@ -22,21 +21,35 @@ function Login() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-      
-        const { username, password } = formData;
-      
-        if (!(username && password)) {
-          return;
-        }
-      
-        try {
-          await userLogin(username, password);
-          navigate('/book');
-        } catch (error) {
-            console.log(error)
-        }
-      }
 
+        const { username, password } = formData;
+
+        if (!(username && password)) {
+            return;
+        }
+
+        if (isLoggedIn) {
+            userLogout();
+            return;
+        }
+
+        try {
+            await userLogin(username, password);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        if (isLoggedIn) {
+            navigate('/book');
+        }
+    }, [isLoggedIn]);
+    useEffect(() => {
+        if (isError) {
+            userLogout();
+        }
+    }, [isError]);
     return (
         <div className="container">
             <div className="row justify-content-center">
