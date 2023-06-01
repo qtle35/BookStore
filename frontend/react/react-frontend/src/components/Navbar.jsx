@@ -1,12 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import AuthContext from './AuthContext';
+import AuthContext from './context/AuthContext';
 import {
     CartStateContext,
     CartDispatchContext,
     toggleCartPopup,
     removeFromCart
-} from "./CartContext";
+} from "./context/CartContext";
 import CartPreview from "./CartPreview";
 
 const Navbar = () => {

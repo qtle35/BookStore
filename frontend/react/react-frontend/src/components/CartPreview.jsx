@@ -5,8 +5,8 @@ import {
     CartDispatchContext,
     removeFromCart,
     toggleCartPopup
-} from "./CartContext";
-import "./Cart.scss"
+} from "./context/CartContext";
+import "./style/Cart.scss"
 
 const CartPreview = () => {
     const navigate = useNavigate();

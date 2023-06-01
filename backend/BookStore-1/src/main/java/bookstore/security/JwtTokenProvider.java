@@ -48,8 +48,6 @@ public class JwtTokenProvider {
                 .setExpiration(Date.from(ZonedDateTime.now().plusMinutes(jwtExpirationMinutes).toInstant()))
                 .setIssuedAt(Date.from(ZonedDateTime.now().toInstant()))
                 .setId(UUID.randomUUID().toString())
-                .setIssuer(TOKEN_ISSUER)
-                .setAudience(TOKEN_AUDIENCE)
                 .setSubject(user.getUsername())
                 .claim("rol", roles)
                 .claim("name", user.getName())
@@ -83,6 +81,4 @@ public class JwtTokenProvider {
     }
 
     public static final String TOKEN_TYPE = "JWT";
-    public static final String TOKEN_ISSUER = "order-api";
-    public static final String TOKEN_AUDIENCE = "order-app";
 }

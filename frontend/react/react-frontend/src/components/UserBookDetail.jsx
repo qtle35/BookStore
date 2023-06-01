@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useContext } from 'react';
-import { useParams, useLocation } from 'react-router-dom';
+import {  useLocation } from 'react-router-dom';
 import commentService from '../services/CommentService';
-import './UserBookDetail.css';
-import './Comment.css';
-import { CartDispatchContext, addToCart } from './CartContext';
+import './style/UserBookDetail.css';
+import './style/Comment.css';
+import { CartDispatchContext, addToCart } from './context/CartContext';
 
 function UserBookDetail() {
     const userName = JSON.parse(localStorage.getItem('user'));
@@ -81,7 +81,7 @@ function UserBookDetail() {
             const response = await commentService.saveComment(formData);
             const newComment = {
                 id: response.data.id,
-                username: userName.name,
+                username: userName.preferred_username,
                 rating,
                 time: formattedDate,
                 commented: comment,

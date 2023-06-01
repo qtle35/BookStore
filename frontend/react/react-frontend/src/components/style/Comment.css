@@ -1,0 +1,57 @@
+.commented-section {
+    overflow: auto;
+    margin-top: 20px;
+}
+
+.comment {
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+}
+
+.comment-header strong {
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.comment-header .comment-rating {
+    margin-right: 10px;
+    font-weight: bold;
+    color: #fdd868;
+}
+
+.comment-header .comment-time {
+    font-size: 12px;
+    color: #777;
+}
+
+.comment-text {
+    margin: 0;
+}
+
+.comment-remove {
+    position: absolute;
+    top: 0;
+    right: 0;
+    height: 24px;
+    width: 24px;
+    font-size: 24px;
+    padding: 0%;
+    color: gray;
+    background-color: transparent;
+    text-align: center;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.comment-remove:hover {
+    color: red;
+}
