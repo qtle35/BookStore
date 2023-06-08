@@ -44,9 +44,6 @@ public class BookController {
 		} catch (IOException e) {
 			String errorMessage = "Failed to create book: " + e.getMessage();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
-		} catch (Exception e) {
-			String errorMessage = "Failed to create book";
-			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorMessage);
 		}
 	}
 

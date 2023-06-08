@@ -42,6 +42,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.GET, "/api/comments/**").permitAll()
                 .requestMatchers(HttpMethod.DELETE, "/api/comments/**").hasAnyAuthority(USER, ADMIN)
                 .requestMatchers(HttpMethod.GET, "/api/books/**").hasAnyAuthority(ADMIN)
+                .requestMatchers(HttpMethod.POST, "/api/orders/checkout").hasAnyAuthority(USER, ADMIN)
+                .requestMatchers(HttpMethod.DELETE, "/api/orders/checkout/**").hasAnyAuthority(USER, ADMIN)
                 .requestMatchers("/book/**").hasAuthority(ADMIN)
                 .requestMatchers("/api/orders", "/book/**").hasAuthority(ADMIN)
                 .requestMatchers("/api/users", "/api/users/**").hasAuthority(ADMIN)

@@ -6,6 +6,8 @@ import Login from './components/acc/Login';
 import Signup from './components/acc/Signup';
 import Navbar from './components/Navbar';
 import UserBookDetail from './components/UserBookDetail';
+import Checkout from './components/Checkout';
+import Orders from './components/Orders';
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
         <Route path='/login' element={<Login />} />
         <Route path='/signup' element={<Signup />} />
         <Route path='/userbookdetail/:id' element={<UserBookDetail />} />
+        <Route path='/checkout' element={<Checkout />} />
+        <Route path='/orders' element={<Orders />} />
       </Routes>
     </BrowserRouter>
   );

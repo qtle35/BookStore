@@ -4,7 +4,7 @@ $white: white;
 $gray-eighty: #888;
 $gray-light: rgb(177, 175, 175);
 $gray-dark: rgb(129, 129, 129);
-$green-light-bg: rgb(200, 253, 200);
+$green-light-bg: rgb(228, 250, 228);
 $red: red;
 
 .cart {
@@ -183,7 +183,7 @@ $red: red;
 
     .product-image {
         width: 48px;
-        height: 48px;
+        height: 55px;
     }
 
     .product-info {
@@ -241,6 +241,13 @@ $red: red;
         &:hover {
             color: $red;
         }
+
+
+    }
+
+    &:hover {
+        background: $green-light-bg;
+        cursor: pointer;
     }
 }
 

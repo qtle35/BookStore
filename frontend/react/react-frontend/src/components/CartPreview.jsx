@@ -13,13 +13,18 @@ const CartPreview = () => {
     const { items, isCartOpen } = useContext(CartStateContext);
     const dispatch = useContext(CartDispatchContext);
 
-    const handleRemove = (productId) => {
+
+    const handleRemove = (event, productId) => {
+        event.stopPropagation();
         return removeFromCart(dispatch, productId);
     };
-
+    const viewBook = (book) => {
+        toggleCartPopup(dispatch);
+        navigate(`/userbookdetail/${book.id}`, { state: { book } });
+    };
     const handleProceedCheckout = () => {
         toggleCartPopup(dispatch);
-        // navigate("/checkout");
+        if (items.length !== 0) navigate("/checkout");
     };
 
     return (
@@ -27,7 +32,7 @@ const CartPreview = () => {
             <ul className="cart-items">
                 {items.map((product) => {
                     return (
-                        <li className="cart-item" key={product.name}>
+                        <li className="cart-item" key={product.name} onClick={() => viewBook(product)}>
                             <img
                                 className="product-image"
                                 src={`data:image;base64,${product.image}`}
@@ -45,7 +50,7 @@ const CartPreview = () => {
                             </div>
                             <button
                                 className="product-remove"
-                                onClick={() => handleRemove(product.id)}
+                                onClick={(event) => handleRemove(event, product.id)}
                             >
                                 ×
                             </button>
@@ -53,6 +58,15 @@ const CartPreview = () => {
                     );
                 })}
             </ul>
+            <div className="action-block">
+                <button
+                    type="button"
+                    className={`${items && items.length === 0 ? 'disabled' : ''}`}
+                    onClick={handleProceedCheckout}
+                >
+                    PROCEED TO CHECKOUT
+                </button>
+            </div>
         </div>
     );
 };
